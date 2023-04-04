@@ -1,4 +1,5 @@
-document.querySelector('button').addEventListener('click', getMusic)
+//when user clicks on button 'get new jam' getMusic function is ran
+document.querySelector('.button').addEventListener('click', getMusic)
 
 const options = {
 	method: 'GET',
@@ -8,19 +9,27 @@ const options = {
 	}
 };
 
+
+//How music is selected from the API deezer
 function getMusic(){
-    let song = document.querySelector('input').value
-    fetch(`https://deezerdevs-deezer.p.rapidapi.com/search?q=${song}`, options)
+   
+    let song = document.querySelector('input').value //the input from the user
+    fetch(`https://deezerdevs-deezer.p.rapidapi.com/search?q=${song}`, options) //getting song choice from API
 	.then(response => response.json()) //parse response as JSON
+    
 	.then(res => {
-        console.log(res.data[0])
-        document.querySelector('h2').innerText = res.data[0].title
-        document.querySelector('h3').innerText = res.data[0].artist.name
-        document.querySelector('img').src = res.data[0].album.cover_medium
-        document.querySelector('audio').src = res.data[0].preview
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+          }
+        let songChoice = res.data[getRandomInt(25)];
+        console.log(songChoice);
+        document.querySelector('h2').innerText = songChoice.title
+        document.querySelector('h3').innerText = songChoice.artist.name
+        document.querySelector('img').src = songChoice.album.cover_medium
+        document.querySelector('audio').src = songChoice.preview
     })
 	.catch(err => {
-        alert('Oh No! You got an error. Check Spelling and Try again!')
+        alert('Oh wow! You got an error. Your emotions are just too obscure for us. Maybe Check Your Spelling and Try again?!? IDK.')
         console.error(err)
     
     });
@@ -29,4 +38,9 @@ function getMusic(){
 function toggleMobileMenu(menu){
     menu.classList.toggle('open');
 }
+
+function myFunction() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+  } 
 
